@@ -4,25 +4,31 @@
 
 class element {
     private:
-        int value;
-        element *left_element;
-        element *right_element;
-        element *previus_element;
+        int value_;
+        element* left_element_;
+        element* right_element_;
+        element* previous_element_;
     public:
-        element(int value);
+        element(const int new_value);
         ~element(void);
+    
+        void set_value( const int new_value );
+        int get_value(void) const;
 
-        int get_value(void);
-        void set_value(int value);
+        void set_left_element( element* new_left_element );
+        element* get_left_element( void ) const;
 
-        void set_left_element(element *left_element);
-        element* get_left_element(void);
+        void set_right_element( element* new_right_element );
+        element* get_right_element(void) const;
 
-        void set_right_element(element *right_element);
-        element* get_right_element(void);
+        void set_previous_element( element* new_previous_element );
+        element* get_previous_element( void ) const;
 
-        void set_previus_element(element *previus_element);
-        element* get_previus_element(void);
+        bool is_left_child( const element*  element ) const;
+        bool is_right_child( const element*  element ) const;
+
+        bool have_left_child( void ) const;
+        bool have_right_child( void ) const;
 };
 
 #endif
