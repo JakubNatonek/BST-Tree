@@ -5,7 +5,7 @@
 int main() {
     std::cout<<"Hello World";
 
-    element test = new element(8);
+    element *test = new element(8);
 
     if(test == test.get_left_element()) {
         std::cout << "Tak" << std::endl;
