@@ -1,44 +1,76 @@
-#include "element.h"
+/**
+ * @file element.h
+ * @brief Definicja klasy element do zarządzania wartościami i połączeniami między elementami.
+ */
 
+/**
+ * @class element
+ * @brief Klasa reprezentująca pojedynczy element z wartością oraz wskaźnikami do innych elementów.
+ */
+class element {
+public:
+    /**
+     * @brief Konstruktor ustawiający początkową wartość oraz inicjalizujący wskaźniki na bieżący obiekt.
+     * @param value Wartość przypisywana do elementu.
+     */
+    element(int value);
 
-element::element(int value) {
-    this->value = value;
-    this->left_element = this;
-    this->right_element = this;
-    this->previus_element = this;
-}
+    /**
+     * @brief Destruktor klasy element.
+     */
+    ~element();
 
-element::~element() {
-}
+    /**
+     * @brief Pobiera wartość elementu.
+     * @return Wartość typu int przechowywana w obiekcie.
+     */
+    int get_value();
 
-int element::get_value() {
-    return this->value;
-}
+    /**
+     * @brief Ustawia nową wartość elementu.
+     * @param value Nowa wartość przypisywana do elementu.
+     */
+    void set_value(int value);
 
-void element::set_value(int value) {
-    this->value = value;
-}
+    /**
+     * @brief Ustawia wskaźnik na lewy element.
+     * @param left_element Wskaźnik na lewy element.
+     */
+    void set_left_element(element *left_element);
 
-void element::set_left_element(element *left_element) {
-    this->left_element = left_element;
-}
+    /**
+     * @brief Pobiera wskaźnik na lewy element.
+     * @return Wskaźnik na lewy element.
+     */
+    element* get_left_element();
 
-element* element::get_left_element(void) {
-    return this->left_element;
-}
+    /**
+     * @brief Ustawia wskaźnik na prawy element.
+     * @param right_element Wskaźnik na prawy element.
+     */
+    void set_right_element(element *right_element);
 
-void element::set_right_element(element *right_element) {
-    this->right_element = right_element;
-}
+    /**
+     * @brief Pobiera wskaźnik na prawy element.
+     * @return Wskaźnik na prawy element.
+     */
+    element* get_right_element();
 
-element* element::get_right_element(void) {
-    return this->right_element;
-}
+    /**
+     * @brief Ustawia wskaźnik na poprzedni element.
+     * @param previus_element Wskaźnik na poprzedni element.
+     */
+    void set_previus_element(element *previus_element);
 
-void element::set_previus_element(element *previus_element) {
-    this->previus_element = previus_element;
-}
+    /**
+     * @brief Pobiera wskaźnik na poprzedni element.
+     * @return Wskaźnik na poprzedni element.
+     */
+    element* get_previus_element();
 
-element* element::get_previus_element(void) {
-    return this->previus_element;
-}
+private:
+    int value;
+    element* left_element; 
+    element* right_element; 
+    element* previus_element; 
+};
