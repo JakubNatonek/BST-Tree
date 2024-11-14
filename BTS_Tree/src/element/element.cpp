@@ -1,9 +1,4 @@
 /**
- * @file element.h
- * @brief Definicja klasy element do zarządzania wartościami i połączeniami między elementami.
- */
-
-/**
  * @class element
  * @brief Klasa reprezentująca pojedynczy element z wartością oraz wskaźnikami do innych elementów.
  */
