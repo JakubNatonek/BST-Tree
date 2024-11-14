@@ -3,6 +3,9 @@
 
 element::element(int value) {
     this->value = value;
+    this->left_element = this;
+    this->right_element = this;
+    this->previus_element = this;
 }
 
 element::~element() {
