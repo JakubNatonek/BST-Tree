@@ -12,6 +12,10 @@ class tree {
         element* start_element_; ///< Wskaźnik na korzeń drzewa binarnego.
         void _add_element( element* new_element, element* root );
         void _show_tree( element* element );
+        void _pre_order(element* element);
+        void _in_order(element* element);
+        void _post_order(element* element);
+
         element* _search_for_element( element* root, int value );
         void _remove_tree( element* element );
     public:
@@ -41,6 +45,10 @@ class tree {
         void search_for_path_to_element( element* root );
         void save_to_file();
         void read_from_file();
+
+        void pre_order();
+        void in_order();
+        void post_order();
 };
 
 #endif // TREE_H

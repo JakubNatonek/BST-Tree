@@ -247,6 +247,84 @@ element* tree::_search_for_element( element* root, int value ) {
     }
 }
 
+void tree::_pre_order(element* element) {
+    if (element == nullptr) {
+        return;
+    }
+
+    // Root, Left, Right
+    std::cout << element->get_value() << " ";
+
+    if (element->have_left_child()) {
+        this->_pre_order(element->get_left_element());
+    }
+
+    if (element->have_right_child()) {
+        this->_pre_order(element->get_right_element());
+    }
+}
+
+void tree::pre_order() {
+    if (this->get_start_element() == nullptr) {
+        return;
+    }
+
+    this->_pre_order(this->get_start_element());
+    std::cout << std::endl;
+}
+
+void tree::_in_order(element* element) {
+    if (element == nullptr) {
+        return;
+    }
+
+    // Left, Root, Right
+    if (element->have_left_child()) {
+        this->_in_order(element->get_left_element());
+    }
+
+    std::cout << element->get_value() << " ";
+
+    if (element->have_right_child()) {
+        this->_in_order(element->get_right_element());
+    }
+}
+
+void tree::in_order() {
+    if (this->get_start_element() == nullptr) {
+        return;
+    }
+
+    this->_in_order(this->get_start_element());
+    std::cout << std::endl;
+}
+
+void tree::_post_order(element* element) {
+    if (element == nullptr) {
+        return;
+    }
+
+    // Left, Right, Root
+    if (element->have_left_child()) {
+        this->_post_order(element->get_left_element());
+    }
+
+    if (element->have_right_child()) {
+        this->_post_order(element->get_right_element());
+    }
+
+    std::cout << element->get_value() << " ";
+}
+
+void tree::post_order() {
+    if (this->get_start_element() == nullptr) {
+        return;
+    }
+
+    this->_post_order(this->get_start_element());
+    std::cout << std::endl;
+}
+
 void tree::search_for_path_to_element( element* root ) {
     std::cout << root->get_value() << std::endl;
     if( root == this->get_start_element() )
