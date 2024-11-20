@@ -15,15 +15,21 @@ int main(int argc, char* argv[]) {
         tst->add_element( new element( i ) );
     }
 
-    for( int i = 1; i <= 10; i++ ) {
-        tst->add_element( new element( i ) );
-    }
+
 
     tst->show_tree();
 
-    std::cout << tst->search_for_element( 12 )->get_value() << std::endl;
 
-    tst->remove_element( 12 );
+    std::cout << "Pre-order traversal: ";
+    tst->pre_order();
+
+    std::cout << "In-order traversal: ";
+    tst->in_order();
+
+    std::cout << "Post-order traversal: ";
+    tst->post_order();
+
+
     
     return 0;
 }
