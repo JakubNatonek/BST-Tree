@@ -4,7 +4,7 @@
 
 int main(int argc, char* argv[]) {
 
-	int test_array[] = {7,3,1,2,5,4,6,10,9,8,12,13};
+	int test_array[] = {7,3,1,2,5,4,6,10,9,8,12,13,21};
     
 	tree* tst = new tree();
     
@@ -28,7 +28,9 @@ int main(int argc, char* argv[]) {
 		std::cout << "6. Przejdz drzewa metoda in-order\n";
 		std::cout << "7. Przejdz drzewa metoda pre-order\n";
 		std::cout << "8. Wypisz drzewo\n";
-		std::cout << "9. Wyjdz\n";
+		std::cout << "9. Szukaj drogi do podanego elementu,\n";
+		std::cout << "10. Usun cale drzewo,\n";
+		std::cout << "11. Wyjdz\n";
 		std::cout << "Wybierz opcje: ";
 		std::cin >> choice;
 		std::cout << "" << std::endl;
@@ -37,33 +39,32 @@ int main(int argc, char* argv[]) {
 		case 1:
 			std::cout << "Jaki typ pliku? 1. zapisany binarnie, 2. zapisany cyfrowo:" << std::endl;
 			std::cin >> temp;
-			if (temp == 1)
-			{
+			if (temp == 1) {
 				//funkcja binarna
 			}
-			else
-			{
+			else {
 				//funkcja cyfrowa
+				tst->load_from_file_txt("E:/Projects/cpp/BTS_Tree/BTS_Tree/output.txt");
 			}
 			std::cout << "" << std::endl;
 			break;
 		case 2:
 			std::cout << "Jaki typ pliku? 1. zapisany binarnie, 2. zapisany cyfrowo:" << std::endl;
 			std::cin >> temp;
-			if (temp == 1)
-			{
+			if (temp == 1) {
 				//funkcja binarna
+				
 			}
-			else
-			{
+			else {
 				//funkcja cyfrowa
+				tst->save_to_file_txt();
 			}
 			std::cout << "" << std::endl;
 			break;
 		case 3:
 			std::cout << "Podaj cyfre do dodania:" << std::endl;
-			//std::cin>>temp;
-			//tst->add_element(temp);
+			std::cin>>temp;
+			tst->add_element(temp);
 			std::cout << "" << std::endl;
 			break;
 		case 4:
@@ -89,6 +90,15 @@ int main(int argc, char* argv[]) {
 			std::cout << "" << std::endl;
 			break;
 		case 9:
+			std::cout << "Podaj cyfre do znalezienia ścieżki:" << std::endl;
+			std::cin >> temp;
+			tst->search_for_path_to_element( tst->search_for_element(temp) );
+			std::cout << "" << std::endl;
+			break;
+		case 10:
+			tst->remove_tree();
+			break;
+		case 11:
 			running = false;
 			break;
 		default:

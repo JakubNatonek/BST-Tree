@@ -1,6 +1,8 @@
 #include "tree.h"
 #include "../element/element.h"
 #include <iostream>
+#include <fstream>
+#include <string>
 
 tree::tree() {
     this->start_element_ = nullptr;
@@ -136,6 +138,7 @@ void tree::remove_element( element* root ) {
 
     // ostatni element
     if( !root->have_left_child() && !root->have_right_child() ) {
+        std::cout<<"COS 139" <<std::endl;
         // sprawdzenie czy usuwany element jest prawym czy lewym dzieckiem
         if( root->get_previous_element()->is_left_child(root) ) {
             // usunięcie lewego dziecka
@@ -149,31 +152,39 @@ void tree::remove_element( element* root ) {
         return;
     }
     // jeśli posiada prawe dziecko
-    else if( root->have_right_child() ) {
+    else if( root->have_right_child() && !root->have_left_child() ) {
+        std::cout << "153 prawo" << std::endl;
         // jeśli usuwany element jest lewym dzieckiem
         if( root->get_previous_element()->is_left_child( root ) ) {
+            std::cout << "156 prawo" << std::endl;
             // ustawienie prawego dziecka w miejsce usuwanego elementu lewe dziecko
             root->get_previous_element()->set_left_element( root->get_right_element() );
         }
         // jeśli usuwany element jest prawym dzieckiem
-        else if( root->get_previous_element()->is_right_child(root) ) {
+        else if( root->get_previous_element()->is_right_child( root ) ) {
+            std::cout << "162 prawo" << std::endl;
             // ustawienie prawego dziecka w miejsce usuwanego elementu prawe dziecko
             root->get_previous_element()->set_right_element( root->get_right_element() );
+                // 10 -> 12 -> 13
         }
         // ustawienie poprzedniego elementu na element poprzedni usuniętego elementu
         root->get_right_element()->set_previous_element( root->get_previous_element() );
+        // 13 -> 12 -> 10 
         delete root;
         return;
     }
-    // jeśli posiada lewege dziecko
-    else if( root->have_left_child() ) {
+    // jeśli posiada lewe dziecko
+    else if( root->have_left_child() && !root->have_right_child() ) {
+        std::cout << "Lewe  Powino 170" << std::endl;
         // jeśli usuwany element jest lewym dzieckiem
         if( root->get_previous_element()->is_left_child(root) ) {
+            std::cout << "Lewe nie Powino 173" << std::endl;
             // ustawienie lewego dziecka w miejsce usuwanego elementu lewe dziecko
             root->get_previous_element()->set_left_element( root->get_left_element() );
         }
         // jeśli usuwany element jest prawym dzieckiem
         else if( root->get_previous_element()->is_right_child(root) ) {
+            std::cout << "Lewe Powino 179" << std::endl;
             // ustawienie lewego dziecka w miejsce usuwanego elementu prawe dziecko
             root->get_previous_element()->set_right_element( root->get_left_element() );
         }
@@ -184,6 +195,7 @@ void tree::remove_element( element* root ) {
     }
     // jeśli posiada oba dziecka
     else if( root->have_left_child() && root->have_right_child() ) {
+        std::cout << "CZEMU TU" << std::endl;
         element* element_for_swap = root->get_right_element();
 
         // znalezienie elementu bez dzieci
@@ -200,24 +212,45 @@ void tree::remove_element( element* root ) {
 
         // jeśli jest lewym elementem bez dzieci
         if( element_for_swap->get_previous_element()->is_left_child( element_for_swap ) ) {
-
+            std::cout << "215 lewe " << element_for_swap->get_value() << std::endl;
             // usunięcie elementu z swojego miejsca w celu wpisania go w miejsce usuniętego elementu
             element_for_swap->get_previous_element()->set_left_element( element_for_swap->get_previous_element() );
+            // 4 -> 5 set l 5
 
             // dołączenie elementu w miejsce usuniętego elementu
             element_for_swap->set_previous_element( root->get_previous_element() );
+            // 4 set p 7
+
+            if( root->get_previous_element()->is_left_child(root) ) {
+                std::cout << "Lewe  Powino 227" << std::endl;
+                // ustawienie lewego dziecka w miejsce usuwanego elementu lewe dziecko
+                root->get_previous_element()->set_left_element( element_for_swap );
+                // 3 -> 7 set l 4
+            }
+            // jeśli usuwany element jest prawym dzieckiem
+            else if( root->get_previous_element()->is_right_child(root) ) {
+                std::cout << "Lewe Powino 233" << std::endl;
+                // ustawienie lewego dziecka w miejsce usuwanego elementu prawe dziecko
+                root->get_previous_element()->set_right_element( element_for_swap );
+                // 3 -> 7 set r 4
+            }
 
             // dodłączenie lewego dziecka usuniętego elementu
             element_for_swap->set_left_element( root->get_left_element() );
+            // 4 set l 1
             element_for_swap->get_left_element()->set_previous_element( element_for_swap );
+            // 4 -> 1 set p 4
             // odłączenie prawego dziecka usuniętego elementu
             element_for_swap->set_right_element( root->get_right_element() );
+            // 4 set r 5
             element_for_swap->get_right_element()->set_previous_element( element_for_swap );
+            // 4 -> 5 set p 4
             delete root;
             return;
         }
         // jeśli jest prawym elementem bez dzieci
         else if( element_for_swap->get_previous_element()->is_right_child( element_for_swap ) ) {
+            std::cout << "233 prawe rekurencja " << std::endl;
             // zapisanie vartości prawego dziecka elementu do usunięcia
             int new_value = root->get_right_element()->get_value();
             // usunięcie prawego dziecka elementu do usunięcia
@@ -354,4 +387,55 @@ void tree::_remove_tree( element* element ) {
     }
 
     delete element;
+}
+
+void tree::save_to_file_txt() {
+    if (this->get_start_element() == nullptr) {
+        return;
+    }
+    std::ofstream file;
+    
+    file.open("output.txt");
+    
+    if (!file.is_open()) {
+        std::cerr << "Nie udało się otworzyć pliku do odczytu!" << std::endl;
+        return;
+    }
+
+    this->_pre_order_save_to_txt( this->get_start_element(), file );
+
+    file.close(); // not necessary, but a good practice
+}
+
+void tree::_pre_order_save_to_txt( element* element, std::ofstream& file ) {
+
+    // Root, Left, Right
+    file << element->get_value() <<  std::endl;
+
+    if (element->have_left_child()) {
+        this->_pre_order_save_to_txt( element->get_left_element(), file );
+    }
+
+    if (element->have_right_child()) {
+        this->_pre_order_save_to_txt( element->get_right_element(), file);
+    }
+}
+
+void tree::load_from_file_txt(std::string path) {
+    std::string line;
+    std::ifstream file;
+    file.open( path );
+    if (!file.is_open()) {
+        std::cerr << "Nie udało się otworzyć pliku do odczytu!" << std::endl;
+        return;
+    }
+    
+    this->remove_tree();
+    
+    while (std::getline (file, line)) {
+        // Output the text from the file
+        this->add_element(  std::stoi( line ) );
+    }
+
+    file.close();
 }

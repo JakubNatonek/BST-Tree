@@ -2,6 +2,7 @@
 #define TREE_H
 
 #include "../element/element.h"
+#include <fstream>
 
 /**
  * @class tree
@@ -18,6 +19,8 @@ class tree {
 
         element* _search_for_element( element* root, int value );
         void _remove_tree( element* element );
+
+        void _pre_order_save_to_txt( element* element, std::ofstream& file );
     public:
         tree( void );
         
@@ -43,8 +46,8 @@ class tree {
         void remove_tree();
         element* search_for_element( int value );
         void search_for_path_to_element( element* root );
-        void save_to_file();
-        void read_from_file();
+        void save_to_file_txt();
+        void load_from_file_txt( std::string path );
 
         void pre_order();
         void in_order();
