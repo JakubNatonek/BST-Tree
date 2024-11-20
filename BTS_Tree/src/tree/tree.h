@@ -5,6 +5,7 @@
 
 class tree {
     private:
+        int size;
         element* start_element_;
         void _add_element( element* new_element, element* root );
         void _show_tree( element* element );
