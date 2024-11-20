@@ -3,3 +3,6 @@ obj/
 /packages/
 riderModule.iml
 /_ReSharper.Caches/
+/.vs
+/BTS_Tree/x64/Debug
+/BTS_Tree/BTS_Tree.vcxproj.user
