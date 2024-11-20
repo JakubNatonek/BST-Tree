@@ -209,11 +209,11 @@ void tree::_post_order(element* element) {
     }
 
     // Left, Right, Root
-    if (element->get_left_element() != nullptr && element->get_left_element() != element) {
+    if (element->have_left_child()) {
         this->_post_order(element->get_left_element());
     }
 
-    if (element->get_right_element() != nullptr && element->get_right_element() != element) {
+    if (element->have_right_child()) {
         this->_post_order(element->get_right_element());
     }
 
