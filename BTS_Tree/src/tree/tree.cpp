@@ -7,11 +7,19 @@ tree::tree() {
     size = 0;
 }
 
+/**
+ * @brief Konstruktor klasy tree tworzący nowe drzewo z początkowym elementem o zadanej wartości.
+ * @param new_value Wartość pierwszego elementu drzewa.
+ */
 tree::tree( int const new_value ) {
     this->start_element_ = new element( new_value );
     size = 1;
 }
 
+
+/**
+ * @brief Destruktor klasy tree.
+ */
 tree::~tree( void ) {
 
 }
@@ -24,6 +32,10 @@ element* tree::get_start_element( void ) const {
     return this->start_element_;
 }
 
+/**
+ * @brief Dodaje nowy element do drzewa binarnego.
+ * @param new_element element do dodania do drzewa.
+ */
 void tree::add_element( element* new_element ) {
     if( this->get_start_element() == nullptr ) {
         this->set_start_element( new_element );
