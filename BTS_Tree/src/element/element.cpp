@@ -1,5 +1,7 @@
 #include "element.h"
 
+#include <vcruntime.h>
+
 /* *
  * @brief Konstruktor ustawiający początkową wartość oraz inicjalizujący wskaźniki na bieżący obiekt.
  * @param new_value Wartość przypisywana do elementu.
@@ -101,9 +103,10 @@ bool element::is_left_child( const element* element ) const {
 }
  
 /** 
- * @brief Sprawdza, czy dany element jest właściwym dzieckiem tego elementu. 
+ * @brief Sprawdza, czy dany element jest prawym dzieckiem tego elementu.
+ * 
  * @param element Wskaźnik do elementu do sprawdzenia. 
- * @return prawdziwe, jeśli dany element jest właściwym elementem potomnym, false w przeciwnym razie. 
+ * @return true, jeśli dany element jest prawym elementem potomnym, false w przeciwnym razie. 
  */   
 bool element::is_right_child(const element* element ) const {
     if( this->get_right_element() == element ) {
