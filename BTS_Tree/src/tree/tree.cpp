@@ -4,6 +4,9 @@
 #include <fstream>
 #include <string>
 
+/**
+ * @brief Konstruktor domyślny klasy tree, inicjalizuje puste drzewo.
+ */
 tree::tree() {
     this->start_element_ = nullptr;
 }
@@ -24,6 +27,10 @@ tree::~tree( void ) {
     this->remove_tree();
 }
 
+/**
+ * @brief Ustawia element startowy drzewa.
+ * @param new_start_element Wskaźnik na nowy element startowy.
+ */
 void tree::set_start_element( element* new_start_element ) {
     if( this->get_start_element() == nullptr ) {
         this->start_element_ = new_start_element;
@@ -31,6 +38,11 @@ void tree::set_start_element( element* new_start_element ) {
     }
     this->start_element_ = new_start_element;
 }
+
+/**
+ * @brief Ustawia wartość elementu startowego drzewa.
+ * @param new_value Nowa wartość elementu startowego.
+ */
 void tree::set_start_element( int new_value ) {
     if( this->get_start_element() == nullptr ) {
         this->start_element_ = new element( new_value );
@@ -39,6 +51,10 @@ void tree::set_start_element( int new_value ) {
     this->start_element_->set_value( new_value );
 }
 
+/**
+ * @brief Pobiera wskaźnik na element startowy drzewa.
+ * @return Wskaźnik na element startowy drzewa.
+ */
 element* tree::get_start_element( void ) const {
     return this->start_element_;
 }
@@ -55,15 +71,21 @@ void tree::add_element( element* new_element ) {
     this->_add_element( new_element, this->get_start_element() );
 }
 
+/**
+ * @brief Dodaje nowy element do drzewa binarnego.
+ * @param value Wartość nowego elementu do dodania do drzewa.
+ */
 void tree::add_element( int value ) {
-    
     element* new_element = new element( value );
-    
     add_element( new_element );
 }
 
+/**
+ * @brief Rekurencyjnie dodaje nowy element do odpowiedniego miejsca w drzewie.
+ * @param new_element Nowy element do dodania.
+ * @param root Korzeń drzewa, od którego zaczyna się dodawanie.
+ */
 void tree::_add_element( element* new_element, element* root ) {
-    //left
     if(new_element->get_value() < root->get_value()) {
         if( root == root->get_left_element() ) {
             new_element->set_previous_element( root );
@@ -72,7 +94,6 @@ void tree::_add_element( element* new_element, element* root ) {
         }
         this->_add_element( new_element, root->get_left_element() );
     }
-    //right
     else if( new_element->get_value() > root->get_value() ) {
         if( root == root->get_right_element() ) {
             new_element->set_previous_element( root );
@@ -83,42 +104,10 @@ void tree::_add_element( element* new_element, element* root ) {
     }
 }
 
-void tree::_show_tree( element* element ) {
-    std::cout << element->get_value() << " ";
-    
-    if( element == element->get_left_element() && element == element->get_right_element() ) {
-        return;
-    }
-
-    if( element != element->get_right_element() ) {
-        this->_show_tree( element->get_right_element() );
-    }
-
-    if( element != element->get_left_element() ) {
-        this->_show_tree( element->get_left_element() );
-    }
-}
-
-void tree::show_tree() {
-    if( this->get_start_element() == nullptr ) {
-        return;
-    }
-
-    std::cout << this->get_start_element()->get_value() << std::endl;
-
-    if( this->get_start_element() != this->get_start_element()->get_right_element() ) {
-        this->_show_tree( this->get_start_element()->get_right_element() );
-        std::cout << std::endl;
-    }
-
-    if( this->get_start_element() != this->get_start_element()->get_left_element() ) {
-        this->_show_tree( this->get_start_element()->get_left_element() );
-        std::cout << std::endl;
-    }
-    
-    std::cout << std::endl;
-}
-
+/**
+ * @brief Usuwa element z drzewa binarnego na podstawie wartości.
+ * @param value Wartość elementu do usunięcia.
+ */
 void tree::remove_element( int value ) {
     // usuwanie startowego elementu
     if( value == this->get_start_element()->get_value() ) {
@@ -130,6 +119,10 @@ void tree::remove_element( int value ) {
     this->remove_element( root );
 }
 
+/**
+ * @brief Usuwa element z drzewa binarnego.
+ * @param root Wskaźnik na element do usunięcia.
+ */
 void tree::remove_element( element* root ) {
     // usuwanie startowego elementu
     if( root == this->get_start_element() ) {
@@ -138,7 +131,6 @@ void tree::remove_element( element* root ) {
 
     // ostatni element
     if( !root->have_left_child() && !root->have_right_child() ) {
-        std::cout<<"COS 139" <<std::endl;
         // sprawdzenie czy usuwany element jest prawym czy lewym dzieckiem
         if( root->get_previous_element()->is_left_child(root) ) {
             // usunięcie lewego dziecka
@@ -153,38 +145,30 @@ void tree::remove_element( element* root ) {
     }
     // jeśli posiada prawe dziecko
     else if( root->have_right_child() && !root->have_left_child() ) {
-        std::cout << "153 prawo" << std::endl;
         // jeśli usuwany element jest lewym dzieckiem
         if( root->get_previous_element()->is_left_child( root ) ) {
-            std::cout << "156 prawo" << std::endl;
             // ustawienie prawego dziecka w miejsce usuwanego elementu lewe dziecko
             root->get_previous_element()->set_left_element( root->get_right_element() );
         }
         // jeśli usuwany element jest prawym dzieckiem
         else if( root->get_previous_element()->is_right_child( root ) ) {
-            std::cout << "162 prawo" << std::endl;
             // ustawienie prawego dziecka w miejsce usuwanego elementu prawe dziecko
             root->get_previous_element()->set_right_element( root->get_right_element() );
-                // 10 -> 12 -> 13
         }
         // ustawienie poprzedniego elementu na element poprzedni usuniętego elementu
         root->get_right_element()->set_previous_element( root->get_previous_element() );
-        // 13 -> 12 -> 10 
         delete root;
         return;
     }
     // jeśli posiada lewe dziecko
     else if( root->have_left_child() && !root->have_right_child() ) {
-        std::cout << "Lewe  Powino 170" << std::endl;
         // jeśli usuwany element jest lewym dzieckiem
         if( root->get_previous_element()->is_left_child(root) ) {
-            std::cout << "Lewe nie Powino 173" << std::endl;
             // ustawienie lewego dziecka w miejsce usuwanego elementu lewe dziecko
             root->get_previous_element()->set_left_element( root->get_left_element() );
         }
         // jeśli usuwany element jest prawym dzieckiem
         else if( root->get_previous_element()->is_right_child(root) ) {
-            std::cout << "Lewe Powino 179" << std::endl;
             // ustawienie lewego dziecka w miejsce usuwanego elementu prawe dziecko
             root->get_previous_element()->set_right_element( root->get_left_element() );
         }
@@ -195,7 +179,6 @@ void tree::remove_element( element* root ) {
     }
     // jeśli posiada oba dziecka
     else if( root->have_left_child() && root->have_right_child() ) {
-        std::cout << "CZEMU TU" << std::endl;
         element* element_for_swap = root->get_right_element();
 
         // lewy element
@@ -205,41 +188,28 @@ void tree::remove_element( element* root ) {
             while ( element_for_swap->have_left_child() ) {
                 element_for_swap = element_for_swap->get_left_element();
             }
-            // zamiana elementów
             // jeśli jest lewym elementem bez dzieci
             if( !element_for_swap->have_right_child() && !element_for_swap->have_left_child() ) {
                 // usunięcie elementu z swojego miejsca w celu wpisania go w miejsce usuniętego elementu
                 element_for_swap->get_previous_element()->set_left_element( element_for_swap->get_previous_element() );
-                // 4 -> 5 set l 5
-
                 // dołączenie elementu w miejsce usuniętego elementu
                 element_for_swap->set_previous_element( root->get_previous_element() );
-                // 4 set p 7
 
                 if( root->get_previous_element()->is_left_child( root ) ) {
-                    std::cout << "Lewe  Powino 227" << std::endl;
                     // ustawienie lewego dziecka w miejsce usuwanego elementu lewe dziecko
                     root->get_previous_element()->set_left_element( element_for_swap );
-                    // 3 -> 7 set l 4
                 }
                 // jeśli usuwany element jest prawym dzieckiem
                 else if( root->get_previous_element()->is_right_child( root ) ) {
-                    std::cout << "Lewe Powino 233" << std::endl;
                     // ustawienie lewego dziecka w miejsce usuwanego elementu prawe dziecko
                     root->get_previous_element()->set_right_element( element_for_swap );
-                    // 3 -> 7 set r 4
                 }
-
                 // dodłączenie lewego dziecka usuniętego elementu
                 element_for_swap->set_left_element( root->get_left_element() );
-                // 4 set l 1
                 element_for_swap->get_left_element()->set_previous_element( element_for_swap );
-                // 4 -> 1 set p 4
                 // odłączenie prawego dziecka usuniętego elementu
                 element_for_swap->set_right_element( root->get_right_element() );
-                // 4 set r 5
                 element_for_swap->get_right_element()->set_previous_element( element_for_swap );
-                // 4 -> 5 set p 4
                 delete root;
                 return;
             }
@@ -247,36 +217,25 @@ void tree::remove_element( element* root ) {
                 // przepięcie prawego dziecka w miejsce nominowanego elementu
                 element_for_swap->get_previous_element()->set_left_element( element_for_swap->get_right_element() );
                 element_for_swap->get_right_element()->set_previous_element( element_for_swap->get_previous_element() );
-                // 4 -> 5 set l
 
                 // dołączenie elementu w miejsce usuniętego elementu
                 element_for_swap->set_previous_element( root->get_previous_element() );
-                // 4 set p 7
 
                 if( root->get_previous_element()->is_left_child( root ) ) {
-                    std::cout << "Lewe  Powino 227" << std::endl;
                     // ustawienie lewego dziecka w miejsce usuwanego elementu lewe dziecko
                     root->get_previous_element()->set_left_element( element_for_swap );
-                    // 3 -> 7 set l 4
                 }
                 // jeśli usuwany element jest prawym dzieckiem
                 else if( root->get_previous_element()->is_right_child( root ) ) {
-                    std::cout << "Lewe Powino 233" << std::endl;
                     // ustawienie lewego dziecka w miejsce usuwanego elementu prawe dziecko
                     root->get_previous_element()->set_right_element( element_for_swap );
-                    // 3 -> 7 set r 4
                 }
-
                 // dodłączenie lewego dziecka usuniętego elementu
                 element_for_swap->set_left_element( root->get_left_element() );
-                // 4 set l 1
                 element_for_swap->get_left_element()->set_previous_element( element_for_swap );
-                // 4 -> 1 set p 4
                 // odłączenie prawego dziecka usuniętego elementu
                 element_for_swap->set_right_element( root->get_right_element() );
-                // 4 set r 5
                 element_for_swap->get_right_element()->set_previous_element( element_for_swap );
-                // 4 -> 5 set p 4
                 delete root;
                 return;
             }
@@ -287,19 +246,14 @@ void tree::remove_element( element* root ) {
             element_for_swap->set_previous_element( root->get_previous_element() );
 
             if( root->get_previous_element()->is_left_child( root ) ) {
-                std::cout << "Lewe  Powino 227" << std::endl;
                 // ustawienie lewego dziecka w miejsce usuwanego elementu lewe dziecko
                 root->get_previous_element()->set_left_element( element_for_swap );
-                // 3 -> 7 set l 4
             }
             // jeśli usuwany element jest prawym dzieckiem
             else if( root->get_previous_element()->is_right_child( root ) ) {
-                std::cout << "Lewe Powino 233" << std::endl;
                 // ustawienie lewego dziecka w miejsce usuwanego elementu prawe dziecko
                 root->get_previous_element()->set_right_element( element_for_swap );
-                // 3 -> 7 set r 4
             }
-
             element_for_swap->set_left_element( root->get_left_element() );
             element_for_swap->get_left_element()->set_previous_element( element_for_swap );
             delete root;
@@ -308,16 +262,27 @@ void tree::remove_element( element* root ) {
     }
 }
 
+/**
+ * @brief Szuka elementu o zadanej wartości.
+ * 
+ * @param value Wartość elementu do znalezienia.
+ * @return element* Wskaźnik do znalezionego elementu.
+ */
 element* tree::search_for_element(int value) {
     return this->_search_for_element( this->get_start_element(), value );
 }
 
+/**
+ * @brief Prywatna metoda pomocnicza do szukania elementu o zadanej wartości.
+ * 
+ * @param root Wskaźnik do korzenia drzewa lub poddrzewa.
+ * @param value Wartość elementu do znalezienia.
+ * @return element* Wskaźnik do znalezionego elementu, jeśli istnieje; w przeciwnym razie nullptr.
+ */
 element* tree::_search_for_element( element* root, int value ) {
-    //left
     if(value < root->get_value()) {
         this->_search_for_element( root->get_left_element(), value );
     }
-    //right
     else if( value > root->get_value() ) {
         this->_search_for_element( root->get_right_element(), value );
     }
@@ -326,84 +291,98 @@ element* tree::_search_for_element( element* root, int value ) {
     }
 }
 
+/**
+ * @brief Wykonuje przejście pre-order drzewa zaczynając od podanego elementu.
+ * 
+ * @param element Wskaźnik do aktualnego elementu.
+ */
 void tree::_pre_order(element* element) {
     if (element == nullptr) {
         return;
     }
-
-    // Root, Left, Right
     std::cout << element->get_value() << " ";
-
     if (element->have_left_child()) {
         this->_pre_order(element->get_left_element());
     }
-
     if (element->have_right_child()) {
         this->_pre_order(element->get_right_element());
     }
 }
 
+/**
+ * @brief Wykonuje przejście pre-order drzewa.
+ */
 void tree::pre_order() {
     if (this->get_start_element() == nullptr) {
         return;
     }
-
     this->_pre_order(this->get_start_element());
     std::cout << std::endl;
 }
 
+/**
+ * @brief Wykonuje przejście in-order drzewa zaczynając od podanego elementu.
+ * 
+ * @param element Wskaźnik do aktualnego elementu.
+ */
 void tree::_in_order(element* element) {
     if (element == nullptr) {
         return;
     }
-
-    // Left, Root, Right
     if (element->have_left_child()) {
         this->_in_order(element->get_left_element());
     }
-
     std::cout << element->get_value() << " ";
-
     if (element->have_right_child()) {
         this->_in_order(element->get_right_element());
     }
 }
 
+/**
+ * @brief Wykonuje przejście in-order drzewa.
+ */
 void tree::in_order() {
     if (this->get_start_element() == nullptr) {
         return;
     }
-
     this->_in_order(this->get_start_element());
     std::cout << std::endl;
 }
 
+/**
+ * @brief Wykonuje przejście post-order drzewa zaczynając od podanego elementu.
+ * 
+ * @param element Wskaźnik do aktualnego elementu.
+ */
 void tree::_post_order(element* element) {
     if (element == nullptr) {
         return;
     }
-
-    // Left, Right, Root
     if (element->have_left_child()) {
         this->_post_order(element->get_left_element());
     }
-
     if (element->have_right_child()) {
         this->_post_order(element->get_right_element());
     }
-
     std::cout << element->get_value() << " ";
 }
 
+/**
+ * @brief Wykonuje przejście post-order drzewa.
+ */
 void tree::post_order() {
     if (this->get_start_element() == nullptr) {
         return;
     }
-
     this->_post_order(this->get_start_element());
     std::cout << std::endl;
 }
 
+/**
+ * @brief Szuka ścieżki do podanego elementu i wyświetla ją.
+ * 
+ * @param root Wskaźnik do aktualnego elementu.
+ */
 void tree::search_for_path_to_element( element* root ) {
     std::cout << root->get_value() << std::endl;
     if( root == this->get_start_element() )
@@ -416,57 +395,69 @@ void tree::search_for_path_to_element( element* root ) {
     return;
 }
 
+/**
+ * @brief Usuwa całe drzewo.
+ */
 void tree::remove_tree() {
     this->_remove_tree( this->get_start_element() );
     this->start_element_ = nullptr;
 }
 
+/**
+ * @brief Prywatna metoda pomocnicza do usuwania drzewa zaczynając od podanego elementu.
+ * 
+ * @param element Wskaźnik do aktualnego elementu.
+ */
 void tree::_remove_tree( element* element ) {
-    if( element->have_left_child() )
-    {
+    if( element->have_left_child() ) {
         this->_remove_tree( element->get_left_element() );
     }
-
-    if( element->have_right_child() )
-    {
+    if( element->have_right_child() ) {
         this->_remove_tree( element->get_right_element() );
     }
-
     delete element;
 }
 
+/**
+ * @brief Zapisuje drzewo do pliku tekstowego.
+ * 
+ * @param path Ścieżka do pliku.
+ */
 void tree::save_to_file_txt( std::string path ) {
     if (this->get_start_element() == nullptr) {
         return;
     }
     std::ofstream file;
-    
     file.open(path);
-    
     if (!file.is_open()) {
         std::cerr << "Nie udalo sie otworzyc pliku do zapisu!" << std::endl;
         return;
     }
-
     this->_pre_order_save_to_txt( this->get_start_element(), file );
-
-    file.close(); // not necessary, but a good practice
+    file.close();
 }
 
+/**
+ * @brief Prywatna metoda pomocnicza do zapisywania drzewa w formacie pre-order do pliku tekstowego.
+ * 
+ * @param element Wskaźnik do aktualnego elementu.
+ * @param file Obiekt pliku.
+ */
 void tree::_pre_order_save_to_txt( element* element, std::ofstream& file ) {
-
-    // Root, Left, Right
     file << element->get_value() <<  std::endl;
-
     if (element->have_left_child()) {
         this->_pre_order_save_to_txt( element->get_left_element(), file );
     }
-
     if (element->have_right_child()) {
         this->_pre_order_save_to_txt( element->get_right_element(), file);
     }
 }
 
+/**
+ * @brief Ładuje drzewo z pliku tekstowego.
+ * 
+ * @param path Ścieżka do pliku.
+ */
 void tree::load_from_file_txt(std::string path) {
     std::string line;
     std::ifstream file;
@@ -475,36 +466,39 @@ void tree::load_from_file_txt(std::string path) {
         std::cerr << "Nie udalo sie otworzyc pliku do zapisu!" << std::endl;
         return;
     }
-    
     this->remove_tree();
-    
     while (std::getline (file, line)) {
-        // Output the text from the file
         this->add_element(  std::stoi( line ) );
     }
-
     file.close();
 }
 
+/**
+ * @brief Zapisuje drzewo do pliku binarnego.
+ * 
+ * @param path Ścieżka do pliku.
+ */
 void tree::save_to_file_bin( std::string path ) {
     if (this->get_start_element() == nullptr) {
         return;
     }
     std::ofstream file(path, std::ios::binary);
-
     if (!file.is_open()) {
         std::cerr << "Nie udalo sie otworzyc pliku do zapisu!" << std::endl;
         return;
     }
-
     this->_pre_order_save_to_bin(this->get_start_element(), file);
-
-    file.close(); // niekonieczne, ale dobra praktyka
+    file.close();
 }
 
+/**
+ * @brief Prywatna metoda pomocnicza do zapisywania drzewa w formacie pre-order do pliku binarnego.
+ * 
+ * @param element Wskaźnik do aktualnego elementu.
+ * @param file Obiekt pliku.
+ */
 void tree::_pre_order_save_to_bin(element* element, std::ofstream& file) {
     if (!element) return;
-
     // Zapisujemy wartość elementu w formacie binarnym
     int value = element->get_value();
     file.write(reinterpret_cast<const char*>(&value), sizeof(value));
@@ -518,20 +512,21 @@ void tree::_pre_order_save_to_bin(element* element, std::ofstream& file) {
     }
 }
 
+/**
+ * @brief Ładuje drzewo z pliku binarnego.
+ * 
+ * @param path Ścieżka do pliku.
+ */
 void tree::load_from_file_bin(std::string path) {
     std::ifstream file(path, std::ios::binary);
     if (!file.is_open()) {
         std::cerr << "Nie udalo sie otworzyc pliku do zapisu!" << std::endl;
         return;
     }
-
     this->remove_tree();
-
-    // Czytanie wartości liczbowych z pliku
     int value;
     while (file.read(reinterpret_cast<char*>(&value), sizeof(value))) {
         this->add_element(value);
     }
-
     file.close();
 }

@@ -1,5 +1,4 @@
 #include "element.h"
-
 #include <vcruntime.h>
 
 /* *
@@ -118,6 +117,10 @@ bool element::is_right_child(const element* element ) const {
     return false;
 }
 
+/**
+ * @brief Sprawdza, czy element ma prawego potomka.
+ * @return true jeśli element ma prawego potomka, false w przeciwnym razie.
+ */
 bool element::have_right_child( void ) const {
     if( this != this->get_right_element() ) {
         return true;
@@ -127,6 +130,10 @@ bool element::have_right_child( void ) const {
     }
 }
 
+/**
+ * @brief Sprawdza, czy element ma lewego potomka.
+ * @return true jeśli element ma lewego potomka, false w przeciwnym razie.
+ */
 bool element::have_left_child( void ) const {
     if( this != this->get_left_element() ) {
         return true;

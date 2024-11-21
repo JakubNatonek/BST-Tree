@@ -5,14 +5,12 @@
 int main(int argc, char* argv[]) {
 
 	int test_array[] = {7,3,1,2,5,4,6,10,9,8,12,13,21,14,15,35,32,34};
-
 	
 	tree* tst = new tree();
     
 	for (int i = 0; i < std::size(test_array); i++) {
 		tst->add_element( test_array[i] );
 	}
-
 	
 	int choice;
 	bool running = true;

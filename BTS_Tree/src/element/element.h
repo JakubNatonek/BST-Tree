@@ -71,10 +71,30 @@ class element {
          */
         element* get_previous_element( void ) const;
 
+        /**
+        * @brief Sprawdza, czy dany element jest lewym dzieckiem tego elementu.
+        * @param element Wskaźnik do elementu do sprawdzenia.
+        * @return true jeśli dany element jest lewym elementem potomnym, false w przeciwnym razie.
+        */
         bool is_left_child( const element*  element ) const;
+
+         /**
+         * @brief Sprawdza, czy dany element jest prawym dzieckiem tego elementu.
+         * @param element Wskaźnik do elementu do sprawdzenia.
+         * @return true jeśli dany element jest prawym elementem potomnym, false w przeciwnym razie.
+         */
         bool is_right_child( const element*  element ) const;
 
+         /**
+         * @brief Sprawdza, czy element ma lewego potomka.
+         * @return true jeśli element ma lewego potomka, false w przeciwnym razie.
+         */
         bool have_left_child( void ) const;
+
+        /**
+        * @brief Sprawdza, czy element ma prawego potomka.
+        * @return true jeśli element ma prawego potomka, false w przeciwnym razie.
+        */
         bool have_right_child( void ) const;
 };
 
