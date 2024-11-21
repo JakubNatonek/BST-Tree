@@ -198,65 +198,111 @@ void tree::remove_element( element* root ) {
         std::cout << "CZEMU TU" << std::endl;
         element* element_for_swap = root->get_right_element();
 
-        // znalezienie elementu bez dzieci
-        while ( element_for_swap->have_left_child() || element_for_swap->have_right_child() ) {
-            if( element_for_swap->have_left_child() ) {
-                // przejście na lewe dziecko
+        // lewy element
+        if( element_for_swap->have_left_child() ) {
+            element_for_swap = element_for_swap->get_left_element();
+            // przejscia w lewo
+            while ( element_for_swap->have_left_child() ) {
                 element_for_swap = element_for_swap->get_left_element();
             }
-            else if( element_for_swap->have_right_child() ) {
-                // przejście na prawe dziecko
-                element_for_swap = element_for_swap->get_right_element();
+            // zamiana elementów
+            // jeśli jest lewym elementem bez dzieci
+            if( !element_for_swap->have_right_child() && !element_for_swap->have_left_child() ) {
+                // usunięcie elementu z swojego miejsca w celu wpisania go w miejsce usuniętego elementu
+                element_for_swap->get_previous_element()->set_left_element( element_for_swap->get_previous_element() );
+                // 4 -> 5 set l 5
+
+                // dołączenie elementu w miejsce usuniętego elementu
+                element_for_swap->set_previous_element( root->get_previous_element() );
+                // 4 set p 7
+
+                if( root->get_previous_element()->is_left_child( root ) ) {
+                    std::cout << "Lewe  Powino 227" << std::endl;
+                    // ustawienie lewego dziecka w miejsce usuwanego elementu lewe dziecko
+                    root->get_previous_element()->set_left_element( element_for_swap );
+                    // 3 -> 7 set l 4
+                }
+                // jeśli usuwany element jest prawym dzieckiem
+                else if( root->get_previous_element()->is_right_child( root ) ) {
+                    std::cout << "Lewe Powino 233" << std::endl;
+                    // ustawienie lewego dziecka w miejsce usuwanego elementu prawe dziecko
+                    root->get_previous_element()->set_right_element( element_for_swap );
+                    // 3 -> 7 set r 4
+                }
+
+                // dodłączenie lewego dziecka usuniętego elementu
+                element_for_swap->set_left_element( root->get_left_element() );
+                // 4 set l 1
+                element_for_swap->get_left_element()->set_previous_element( element_for_swap );
+                // 4 -> 1 set p 4
+                // odłączenie prawego dziecka usuniętego elementu
+                element_for_swap->set_right_element( root->get_right_element() );
+                // 4 set r 5
+                element_for_swap->get_right_element()->set_previous_element( element_for_swap );
+                // 4 -> 5 set p 4
+                delete root;
+                return;
             }
+            else if ( element_for_swap->have_right_child() && !element_for_swap->have_left_child() ) {
+                // przepięcie prawego dziecka w miejsce nominowanego elementu
+                element_for_swap->get_previous_element()->set_left_element( element_for_swap->get_right_element() );
+                element_for_swap->get_right_element()->set_previous_element( element_for_swap->get_previous_element() );
+                // 4 -> 5 set l
+
+                // dołączenie elementu w miejsce usuniętego elementu
+                element_for_swap->set_previous_element( root->get_previous_element() );
+                // 4 set p 7
+
+                if( root->get_previous_element()->is_left_child( root ) ) {
+                    std::cout << "Lewe  Powino 227" << std::endl;
+                    // ustawienie lewego dziecka w miejsce usuwanego elementu lewe dziecko
+                    root->get_previous_element()->set_left_element( element_for_swap );
+                    // 3 -> 7 set l 4
+                }
+                // jeśli usuwany element jest prawym dzieckiem
+                else if( root->get_previous_element()->is_right_child( root ) ) {
+                    std::cout << "Lewe Powino 233" << std::endl;
+                    // ustawienie lewego dziecka w miejsce usuwanego elementu prawe dziecko
+                    root->get_previous_element()->set_right_element( element_for_swap );
+                    // 3 -> 7 set r 4
+                }
+
+                // dodłączenie lewego dziecka usuniętego elementu
+                element_for_swap->set_left_element( root->get_left_element() );
+                // 4 set l 1
+                element_for_swap->get_left_element()->set_previous_element( element_for_swap );
+                // 4 -> 1 set p 4
+                // odłączenie prawego dziecka usuniętego elementu
+                element_for_swap->set_right_element( root->get_right_element() );
+                // 4 set r 5
+                element_for_swap->get_right_element()->set_previous_element( element_for_swap );
+                // 4 -> 5 set p 4
+                delete root;
+                return;
+            }
+            return;
         }
-
-        // jeśli jest lewym elementem bez dzieci
-        if( element_for_swap->get_previous_element()->is_left_child( element_for_swap ) ) {
-            std::cout << "215 lewe " << element_for_swap->get_value() << std::endl;
-            // usunięcie elementu z swojego miejsca w celu wpisania go w miejsce usuniętego elementu
-            element_for_swap->get_previous_element()->set_left_element( element_for_swap->get_previous_element() );
-            // 4 -> 5 set l 5
-
-            // dołączenie elementu w miejsce usuniętego elementu
+        // ma prawe dziecko i nie ma lewego
+        else if( element_for_swap->have_right_child() && !element_for_swap->have_left_child() ) {
             element_for_swap->set_previous_element( root->get_previous_element() );
-            // 4 set p 7
 
-            if( root->get_previous_element()->is_left_child(root) ) {
+            if( root->get_previous_element()->is_left_child( root ) ) {
                 std::cout << "Lewe  Powino 227" << std::endl;
                 // ustawienie lewego dziecka w miejsce usuwanego elementu lewe dziecko
                 root->get_previous_element()->set_left_element( element_for_swap );
                 // 3 -> 7 set l 4
             }
             // jeśli usuwany element jest prawym dzieckiem
-            else if( root->get_previous_element()->is_right_child(root) ) {
+            else if( root->get_previous_element()->is_right_child( root ) ) {
                 std::cout << "Lewe Powino 233" << std::endl;
                 // ustawienie lewego dziecka w miejsce usuwanego elementu prawe dziecko
                 root->get_previous_element()->set_right_element( element_for_swap );
                 // 3 -> 7 set r 4
             }
 
-            // dodłączenie lewego dziecka usuniętego elementu
             element_for_swap->set_left_element( root->get_left_element() );
-            // 4 set l 1
             element_for_swap->get_left_element()->set_previous_element( element_for_swap );
-            // 4 -> 1 set p 4
-            // odłączenie prawego dziecka usuniętego elementu
-            element_for_swap->set_right_element( root->get_right_element() );
-            // 4 set r 5
-            element_for_swap->get_right_element()->set_previous_element( element_for_swap );
-            // 4 -> 5 set p 4
             delete root;
-            return;
-        }
-        // jeśli jest prawym elementem bez dzieci
-        else if( element_for_swap->get_previous_element()->is_right_child( element_for_swap ) ) {
-            std::cout << "233 prawe rekurencja " << std::endl;
-            // zapisanie vartości prawego dziecka elementu do usunięcia
-            int new_value = root->get_right_element()->get_value();
-            // usunięcie prawego dziecka elementu do usunięcia
-            this->remove_element( root->get_right_element() );
-            // przepisanie wartości z rekurencyjnego usuwania
-            root->set_value( new_value );
             return;
         }
     }
