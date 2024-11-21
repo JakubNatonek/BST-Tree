@@ -435,13 +435,13 @@ void tree::_remove_tree( element* element ) {
     delete element;
 }
 
-void tree::save_to_file_txt() {
+void tree::save_to_file_txt( std::string path ) {
     if (this->get_start_element() == nullptr) {
         return;
     }
     std::ofstream file;
     
-    file.open("output.txt");
+    file.open(path);
     
     if (!file.is_open()) {
         std::cerr << "Nie udalo sie otworzyc pliku do zapisu!" << std::endl;
@@ -486,11 +486,11 @@ void tree::load_from_file_txt(std::string path) {
     file.close();
 }
 
-void tree::save_to_file_bin() {
+void tree::save_to_file_bin( std::string path ) {
     if (this->get_start_element() == nullptr) {
         return;
     }
-    std::ofstream file("output.txt", std::ios::binary);
+    std::ofstream file(path, std::ios::binary);
 
     if (!file.is_open()) {
         std::cerr << "Nie udalo sie otworzyc pliku do zapisu!" << std::endl;

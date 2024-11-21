@@ -46,10 +46,10 @@ class tree {
         void remove_tree();
         element* search_for_element( int value );
         void search_for_path_to_element( element* root );
-        void save_to_file_txt();
+        void save_to_file_txt( std::string path );
         void load_from_file_txt( std::string path );
 
-        void save_to_file_bin();
+        void save_to_file_bin( std::string path );
 
         void _pre_order_save_to_bin(element* element, std::ofstream& file);
 
