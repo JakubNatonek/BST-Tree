@@ -41,10 +41,11 @@ int main(int argc, char* argv[]) {
 			std::cin >> temp;
 			if (temp == 1) {
 				//funkcja binarna
+				tst->load_from_file_bin("D:/GITHUB REPO/BST-Tree/BTS_Tree/output.txt");
 			}
 			else {
 				//funkcja cyfrowa
-				tst->load_from_file_txt("E:/Projects/cpp/BTS_Tree/BTS_Tree/output.txt");
+				tst->load_from_file_txt("D:/GITHUB REPO/BST-Tree/BTS_Tree/output.txt");
 			}
 			std::cout << "" << std::endl;
 			break;
@@ -53,7 +54,7 @@ int main(int argc, char* argv[]) {
 			std::cin >> temp;
 			if (temp == 1) {
 				//funkcja binarna
-				
+				tst->save_to_file_bin();
 			}
 			else {
 				//funkcja cyfrowa

@@ -398,7 +398,7 @@ void tree::save_to_file_txt() {
     file.open("output.txt");
     
     if (!file.is_open()) {
-        std::cerr << "Nie udało się otworzyć pliku do odczytu!" << std::endl;
+        std::cerr << "Nie udalo sie otworzyc pliku do zapisu!" << std::endl;
         return;
     }
 
@@ -426,7 +426,7 @@ void tree::load_from_file_txt(std::string path) {
     std::ifstream file;
     file.open( path );
     if (!file.is_open()) {
-        std::cerr << "Nie udało się otworzyć pliku do odczytu!" << std::endl;
+        std::cerr << "Nie udalo sie otworzyc pliku do zapisu!" << std::endl;
         return;
     }
     
@@ -435,6 +435,56 @@ void tree::load_from_file_txt(std::string path) {
     while (std::getline (file, line)) {
         // Output the text from the file
         this->add_element(  std::stoi( line ) );
+    }
+
+    file.close();
+}
+
+void tree::save_to_file_bin() {
+    if (this->get_start_element() == nullptr) {
+        return;
+    }
+    std::ofstream file("output.txt", std::ios::binary);
+
+    if (!file.is_open()) {
+        std::cerr << "Nie udalo sie otworzyc pliku do zapisu!" << std::endl;
+        return;
+    }
+
+    this->_pre_order_save_to_bin(this->get_start_element(), file);
+
+    file.close(); // niekonieczne, ale dobra praktyka
+}
+
+void tree::_pre_order_save_to_bin(element* element, std::ofstream& file) {
+    if (!element) return;
+
+    // Zapisujemy wartość elementu w formacie binarnym
+    int value = element->get_value();
+    file.write(reinterpret_cast<const char*>(&value), sizeof(value));
+
+    if (element->have_left_child()) {
+        this->_pre_order_save_to_bin(element->get_left_element(), file);
+    }
+
+    if (element->have_right_child()) {
+        this->_pre_order_save_to_bin(element->get_right_element(), file);
+    }
+}
+
+void tree::load_from_file_bin(std::string path) {
+    std::ifstream file(path, std::ios::binary);
+    if (!file.is_open()) {
+        std::cerr << "Nie udalo sie otworzyc pliku do zapisu!" << std::endl;
+        return;
+    }
+
+    this->remove_tree();
+
+    // Czytanie wartości liczbowych z pliku
+    int value;
+    while (file.read(reinterpret_cast<char*>(&value), sizeof(value))) {
+        this->add_element(value);
     }
 
     file.close();
