@@ -49,6 +49,12 @@ class tree {
         void save_to_file_txt();
         void load_from_file_txt( std::string path );
 
+        void save_to_file_bin();
+
+        void _pre_order_save_to_bin(element* element, std::ofstream& file);
+
+        void load_from_file_bin(std::string path);
+
         void pre_order();
         void in_order();
         void post_order();
